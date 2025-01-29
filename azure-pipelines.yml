@@ -6,3 +6,4 @@ pool:
 
 steps:
   - script: echo "Hello, Azure Pipelines!"
+    displayName: 'Ejecutar script de prueba'
