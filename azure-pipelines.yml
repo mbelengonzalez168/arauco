@@ -1,10 +1,10 @@
-trigger:
-  - main
+trigger: none
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - script: echo "Verificacion conectividad con Tosca"
-  ping -c 4 10.192.221.33
-    displayName: 'Ejecutar script de prueba'
+- script: |
+    echo "Verificando conectividad con el servidor Tosca..."
+    ping -c 4 10.192.221.33
+  displayName: Verificar conectividad con Tosca Server
