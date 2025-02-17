@@ -6,5 +6,5 @@ pool:
 steps:
 - script: |
     echo "Verificando conectividad con el servidor Tosca..."
-    curl -k -v http://10.192.221.33
+    curl -k -v https://10.192.221.33:443
   displayName: Verificar conectividad con Tosca Server
