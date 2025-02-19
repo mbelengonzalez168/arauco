@@ -6,5 +6,9 @@ pool:
 steps:
 - script: |
     echo "Verificando conectividad con el servidor Tosca..."
-    curl -k -v https://10.192.221.33
+    curl --location 'https://certificaciontosca.arauco.com/tua/connect/token' \
+      --header 'Content-Type: application/x-www-form-urlencoded' \
+      --data-urlencode 'grant_type=client_credentials' \
+      --data-urlencode 'client_id=hSw__vACjU6VXjUOPjHf6Q' \
+      --data-urlencode 'client_secret=iPAlqwjlrEGXqHrCY8RZrQOS2CpEL1eUWiNC9ORxlsPw'
   displayName: Verificar conectividad con Tosca Server
