@@ -22,7 +22,6 @@ steps:
         exit 1
       fi
       echo "Token:  $TOKEN"
-      echo"##vso[task.setvariable variable=TOKEN]$TOKEN"
 
   - script: |
       echo "Step 2: Ejecutar Automación en Tosca"
