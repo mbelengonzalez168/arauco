@@ -16,20 +16,20 @@ steps:
       echo "Respuesta recibida: $RESPONSE"
 
       TOKEN=$(echo $RESPONSE | jq -r '.access_token')
+      $(TOKEN) = $TOKEN
 
       if [[ -z "$TOKEN" || "$TOKEN" == "null" ]]; then
         echo "Error: No se pudo obtener el token."
         exit 1
       fi
-      echo "Token:  $TOKEN"
-      echo "TOKEN=$TOKEN" >> $(TOKEN)
+      echo "Token:  $(TOKEN)"
 
   - script: |
       echo "Step 2: Ejecutar Automación en Tosca"
-      echo "Token:  $TOKEN"
+      echo "Token:  $(TOKEN)"
 
       EXECUTION_RESPONSE=$(curl -s -X POST "$(TOSCA_URL)/automationobjectservice/api/Execution/Enqueue" \
-        -H "Authorization: Bearer $TOKEN" \
+        -H "Authorization: Bearer $(TOKEN)" \
         -H "X-Tricentis: OK" \
         -H "Content-Type: application/json" \
         -d '{
