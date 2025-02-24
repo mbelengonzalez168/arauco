@@ -1,14 +1,48 @@
 trigger: none
 
 pool:
-  name: 'CLSCLDEVOPSLNX2'
+  name: 'CLSCLDEVOPSLNX2'  
 
 steps:
-- script: |
-    echo "Verificando conectividad con el servidor Tosca..."
-    curl --location 'https://certificaciontosca.arauco.com/tua/connect/token' \
-      --header 'Content-Type: application/x-www-form-urlencoded' \
-      --data-urlencode 'grant_type=client_credentials' \
-      --data-urlencode 'client_id=hSw__vACjU6VXjUOPjHf6Q' \
-      --data-urlencode 'client_secret=iPAlqwjlrEGXqHrCY8RZrQOS2CpEL1eUWiNC9ORxlsPw' -k -v
-  displayName: Verificar conectividad con Tosca Server
+  - script: |
+      echo "Step 1: Obtener Token de Autenticación"
+
+      RESPONSE=$(curl -s -X POST "$(TOSCA_URL)/tua/connect/token" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "grant_type=client_credentials" \
+        -d "client_id=$(CLIENT_ID)" \
+        -d "client_secret=$(CLIENT_SECRET)")
+
+      echo "Respuesta recibida: $RESPONSE"
+
+      TOKEN=$(echo $RESPONSE | jq -r '.access_token')
+
+      if [[ -z "$TOKEN" || "$TOKEN" == "null" ]]; then
+        echo "Error: No se pudo obtener el token."
+        exit 1
+      fi
+
+      echo "TOKEN=$TOKEN" >> $GITHUB_ENV  # Guardar en variable de entorno
+
+  - script: |
+      echo "Step 2: Ejecutar Automación en Tosca"
+
+      EXECUTION_RESPONSE=$(curl -s -X POST "$(TOSCA_URL)/automationobjectservice/api/Execution/Enqueue" \
+        -H "Authorization: Bearer $TOKEN" \
+        -H "X-Tricentis: OK" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "projectName": "$(PROJECT_NAME)",
+          "executionEnvironment": "$(EXECUTION_ENV)",
+          "events": [
+            {
+              "eventId": "$(EVENT_ID)",
+              "parameters": {},
+              "characteristics": {}
+            }
+          ],
+          "importResult": true,
+          "creator": "$(CREATOR)"
+        }')
+
+      echo "Respuesta de la ejecución: $EXECUTION_RESPONSE"
