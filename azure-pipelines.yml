@@ -21,6 +21,7 @@ steps:
         echo "Error: No se pudo obtener el token."
         exit 1
       fi
+      echo "Token:  $TOKEN"
 
   - script: |
       echo "Step 2: Ejecutar Automación en Tosca"
