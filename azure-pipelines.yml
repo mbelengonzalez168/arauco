@@ -22,8 +22,6 @@ steps:
         exit 1
       fi
 
-      echo "TOKEN=$TOKEN" >> $GITHUB_ENV  # Guardar en variable de entorno
-
   - script: |
       echo "Step 2: Ejecutar Automación en Tosca"
 
