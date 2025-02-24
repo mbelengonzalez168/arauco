@@ -24,7 +24,7 @@ steps:
 
   - script: |
       echo "Step 2: Ejecutar Automación en Tosca"
-      echo $TOKEN
+      echo "Token:  $TOKEN"
 
       EXECUTION_RESPONSE=$(curl -s -X POST "$(TOSCA_URL)/automationobjectservice/api/Execution/Enqueue" \
         -H "Authorization: Bearer $TOKEN" \
